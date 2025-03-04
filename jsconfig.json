@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "module": "es2020",
+    "target": "es2020"
+  }
+}
+//mklink /J C:\Users\Rickd\AppData\Local\FoundryVTT\Data\modules\AutoActionTray\foundry "C:\Program Files\Foundry Virtual Tabletop\resources\app\public\scripts"

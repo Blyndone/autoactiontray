@@ -1,0 +1,53 @@
+<div class="character-tray">
+  {{!-- {{> "AAT.header" }} --}}
+  <!-- Character Image -->
+  <div class="resource-bar">
+{{> "AAT.resource-tray" }}
+  </div>
+
+  <div class="main-tray">
+
+    <div class="character-image">
+      {{> "AAT.character-tray" }}
+    </div>
+
+    <div class="divider"></div>
+
+
+
+    <div class="weapon-section">
+  {{> "AAT.equip-tray" }}
+    </div>
+
+    <div class="divider"></div>
+
+ <div class="current-tray">
+ {{!-- <div class="abilities-tray">
+  {{> (lookup . "currentTrayTemplate") }}
+    </div> --}}
+
+ <div class="abilities-tray static-tray">
+  {{> (lookup . "currentTrayTemplate") }}
+    </div>
+
+  
+ <div class="abilities-tray custom-tray">
+  {{> (lookup . "currentTrayTemplate") }}
+    </div>
+
+
+</div>  
+    <div class="divider"></div>
+
+
+    <div class="end-turn">
+       {{> "AAT.turn-tray" }}
+    </div>
+
+  </div>
+
+  <div class="type-bar">
+  {{> "AAT.type-tray" }}
+  </div>
+
+</div>

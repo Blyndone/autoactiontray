@@ -1,0 +1,222 @@
+.character-tray {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  background: rgba(117, 117, 117, 0.7);
+  padding: 10px;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 100px;
+  left: 600px;
+  z-index: 1000;
+}
+
+.character-image img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.resource-bar,
+.type-bar,
+.weapon-section {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+}
+
+.spells-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1px;
+  width: 320px;
+}
+.consumables-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1px;
+  width: 160px;
+}
+
+.current-tray {
+  overflow: hidden;
+  width: 800px;
+  height: 155px;
+  position: relative;
+  display: flex; /* Helps keep child elements inside */
+  justify-content: center;
+  align-items: center;
+}
+
+.abilities-tray {
+  gap: 1px;
+  position: absolute;
+  width: 800px;
+  flex-direction: row;
+}
+
+.abilities-tray ol {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0px;
+}
+
+.image-list ol li {
+}
+
+.abilities-tray ol li img {
+  background: #333;
+  color: white;
+  border: 2px solid #333;
+  /* padding: 5px 10px; */
+  border-radius: 5px;
+  cursor: pointer;
+  width: 75px;
+  height: 75px;
+  position: relative;
+  vertical-align: middle;
+  align-self: center;
+  margin: 1px;
+}
+
+.abilities-tray ol li img:hover {
+  border: 2px solid #c9593f;
+  box-shadow: 0 0 5px #c9593f;
+}
+
+.ability-button {
+}
+
+.context-menu-item {
+  color: white;
+  background: #333;
+  border: 2px solid #333;
+}
+
+#context-menu ol {
+  display: flex;
+  flex-direction: column;
+}
+.context-items {
+  gap: 1px;
+  background: #333;
+  color: white;
+  border: 2px solid #333;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1000;
+}
+
+.ability-sections {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+}
+
+.main-tray {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  background: rgba(117, 117, 117, 0.7);
+  padding: 10px;
+}
+
+button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #555;
+}
+
+.end-turn {
+  margin-left: auto;
+}
+
+.end-turn-btn {
+  background: red;
+  height: 150px;
+  width: 150px;
+  border-radius: 100%;
+  font-size: 20px;
+  border: 10px, #333;
+}
+
+.resource-btn {
+  background: rgb(97, 97, 95);
+  width: 50px;
+  height: 50px;
+}
+.type-btn {
+  background: rgb(75, 75, 75);
+  width: 100px;
+  height: 30x;
+}
+
+.item-button {
+  background: #333;
+  color: white;
+  border: 2px solid #333;
+  /* padding: 5px 10px; */
+  border-radius: 5px;
+  cursor: pointer;
+  width: 75px;
+  height: 75px;
+  position: relative;
+  vertical-align: middle;
+  align-self: center;
+}
+
+.selected {
+  border: 2px solid #ff0000;
+}
+/* Vertical Divider */
+.divider {
+  width: 5px;
+  height: 100%;
+  background: rgb(212, 0, 0);
+  margin: 0 5px;
+}
+
+.transparent-box {
+  background: #333;
+  color: white;
+  border: 2px solid #333;
+  /* padding: 5px 10px; */
+  border-radius: 5px;
+  cursor: pointer;
+  width: 75px;
+  height: 75px;
+  position: relative;
+  vertical-align: middle;
+  align-self: center;
+  margin: 1px;
+}
+
+.consumable-count {
+  position: relative;
+  bottom: 30px;
+  right: 8px;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: right;
+  height: 0px;
+  text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black,
+    1px 1px 0px black;
+}

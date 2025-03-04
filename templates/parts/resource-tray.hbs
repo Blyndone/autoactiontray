@@ -1,0 +1,26 @@
+{{#each staticTrays as |tray|}}
+  <button
+    class='resource-btn'
+    data-id='{{this.id}}'
+    data-action='setTray'
+    data-index={{@index}}
+    data-type='static'
+  >{{this.id}}</button>
+{{/each}}
+
+{{! <button
+  class="resource-btn"
+  data-id="action"
+  data-action="setTray"
+>Action</button>
+<button class="resource-btn" data-id="bonus" data-action="setTray">Bonus Action</button>
+<button
+  class="resource-btn"
+  data-id="class"
+  data-action="setTray"
+>Class</button>
+<button
+  class="resource-btn"
+  data-id="spell"
+  data-action="setTray"
+>Spells</button> }}

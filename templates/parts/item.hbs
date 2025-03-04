@@ -1,0 +1,32 @@
+<li>
+
+  {{#if item}}
+    <div
+      data-drag="true"
+      data-item-id="{{item._id}}"
+      data-index="{{@index}}"
+      data-action="useItem"
+      class="ability-button"
+    >
+      <img
+        src="{{item.img}}"
+        alt="{{item.name}}"
+        data-item-id="{{item._id}}"
+        data-index="{{@index}}"
+      />
+      {{#if (eq item.type "consumable")}}
+        <div class="consumable-count"> {{item.system.quantity}}</div>
+      {{else}}
+        {{#if (eq item.system.uses.max "")}}{{else}}
+          <div class="consumable-count">
+            {{item.system.uses.value}}
+            /
+            {{item.system.uses.max}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+
+  {{else}}
+    <div class="transparent-box" data-index="{{@index}}"></div>
+  {{/if}}
+</li>
