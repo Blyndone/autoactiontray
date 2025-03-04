@@ -1,11 +1,39 @@
-![](https://img.shields.io/badge/Foundry-v0.7.2-informational)
-[![](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-%243-orange)](https://www.buymeacoffee.com/T2tZvWJ)
+🧙‍♂️ Auto Action Tray – A Baldur's Gate 3 Inspired Action Tray for Foundry VTT
 
+Module Preview
 
-# FoundryVTT Module
+Auto Action Bar is a custom action bar and character tray for Foundry VTT, inspired by the Baldur’s Gate 3 UI. It provides an intuitive way to manage character abilities, spells, and items in a clean and accessible layout.
+✨ Features
 
-Does something, probably
+✅ Action Bar Layout – Organize spells, abilities, and items in a structured tray.
+✅ Quick Access – Easily drag and drop abilities for fast use.
+✅ Customizable UI – Resize, reposition, and modify trays based on preferences.
+✅ Dynamic Updates – Auto-updates with character changes.
+✅ Ritual & Spell Filtering – Automatically sorts abilities into the correct categories.
 
+📥 Installation
+🔹 Foundry VTT (Manually)
 
-## Changelog
+    Download the latest release from the Releases page.
+    Extract the folder into FoundryVTT/Data/modules/.
+    Enable the module in Game Settings > Manage Modules.
 
+🔹 Foundry VTT (Manifest URL)
+
+**TODO**
+
+⚙️ How to Use
+
+**TODO**
+
+🔧 Configuration & Customization
+
+**TODO**
+
+🛠️ Compatibility & Requirements
+
+**TODO**
+
+🚀 Planned Features
+
+**TODO**
