@@ -5,7 +5,9 @@ import { CustomTray } from './components/customtray.js';
 import { StaticTray } from './components/staticTray.js';
 import { registerHandlebarsHelpers } from './helpers/handlebars.js';
 
-export class AutoActionTray extends api.HandlebarsApplicationMixin(ApplicationV2) {
+export class AutoActionTray extends api.HandlebarsApplicationMixin(
+  ApplicationV2
+) {
   // Constructor
 
   constructor(options = {}) {

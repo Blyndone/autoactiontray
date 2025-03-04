@@ -11,7 +11,8 @@ export async function preloadHandlebarsTemplates() {
     "modules/auto-action-tray/templates/parts/type-tray.hbs",
     "modules/auto-action-tray/templates/parts/ability-tray.hbs",
     "modules/auto-action-tray/templates/parts/item.hbs",
-    "modules/auto-action-tray/templates/parts/full-tray.hbs"
+    "modules/auto-action-tray/templates/parts/full-tray.hbs",
+    "modules/auto-action-tray/templates/parts/item-tooltip.hbs"
   ];
   const paths = {};
   for (const path of partials) {

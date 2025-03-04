@@ -2,23 +2,26 @@
 
   {{#if item}}
     <div
-      data-drag="true"
-      data-item-id="{{item._id}}"
-      data-index="{{@index}}"
-      data-action="useItem"
-      class="ability-button"
+      data-drag='true'
+      data-item-id='{{item._id}}'
+      data-index='{{@index}}'
+      data-tooltip= "{{> 'AAT.item-tooltip' }}"
+      data-action='useItem'
+      data-tooltip-direction='UP'
+      class='ability-button'
     >
+   
       <img
-        src="{{item.img}}"
-        alt="{{item.name}}"
-        data-item-id="{{item._id}}"
-        data-index="{{@index}}"
+        src='{{item.img}}'
+        alt='{{item.name}}'
+        data-item-id='{{item._id}}'
+        data-index='{{@index}}'
       />
-      {{#if (eq item.type "consumable")}}
-        <div class="consumable-count"> {{item.system.quantity}}</div>
+      {{#if (eq item.type 'consumable')}}
+        <div class='consumable-count'> {{item.system.quantity}}</div>
       {{else}}
-        {{#if (eq item.system.uses.max "")}}{{else}}
-          <div class="consumable-count">
+        {{#if (eq item.system.uses.max '')}}{{else}}
+          <div class='consumable-count'>
             {{item.system.uses.value}}
             /
             {{item.system.uses.max}}</div>
@@ -27,6 +30,6 @@
     </div>
 
   {{else}}
-    <div class="transparent-box" data-index="{{@index}}"></div>
+    <div class='transparent-box' data-index='{{@index}}'></div>
   {{/if}}
 </li>

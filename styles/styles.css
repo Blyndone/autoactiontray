@@ -220,3 +220,78 @@ button:hover {
   text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black,
     1px 1px 0px black;
 }
+
+/* ------------ */
+.tooltip-container {
+  background: #2c1f12;
+  border: 2px solid #704214;
+  border-radius: 8px;
+  padding: 10px;
+  color: #d4af6a;
+  width: 300px;
+  font-family: serif;
+  position: relative;
+  text-align: left;
+}
+
+.tooltip-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #ffdb87;
+}
+
+.tooltip-subtitle {
+  font-size: 14px;
+  color: #bda069;
+}
+
+.tooltip-damage h3 {
+  font-size: 18px;
+  margin: 5px 0;
+  color: #ffcc66;
+}
+
+.damage-type {
+  font-size: 16px;
+  color: #86d632;
+}
+
+.tooltip-description {
+  font-size: 14px;
+  color: #c8b08e;
+  display: -webkit-box;
+  -webkit-line-clamp: 10; /* Change this number to limit the lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 250px;
+}
+
+.tooltip-effect {
+  font-size: 13px;
+  color: #c9593f;
+}
+
+.tooltip-duration,
+.tooltip-info {
+  font-size: 14px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tooltip-footer {
+  margin-top: 10px;
+  text-align: left;
+  background-color: #1d140c;
+  padding: 6px;
+}
+
+.action-tag {
+  background: #612626;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+/* ------------ */
