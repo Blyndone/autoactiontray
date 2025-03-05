@@ -57,7 +57,7 @@ export function registerHandlebarsHelpers() {
       }
       case item.type == 'spell' && actionType == 'heal': {
         const baseDamage = item.system.activities.contents[0].healing;
-        if (baseDamage.number && baseDamage.denomination) {
+        if (baseDamage?.number && baseDamage?.denomination) {
           min = baseDamage.number; // Minimum healing (1 * number of dice)
           max = baseDamage.number * baseDamage.denomination; // Maximum healing
           dieSize = baseDamage.denomination; // Die size
@@ -81,7 +81,7 @@ export function registerHandlebarsHelpers() {
           actionType == 'save' ||
           actionType == 'damage'): {
         const baseDamage = item.system.activities.contents[0].damage.parts[0];
-        if (baseDamage.number && baseDamage.denomination) {
+        if (baseDamage?.number && baseDamage?.denomination) {
           min = baseDamage.number; // Minimum healing (1 * number of dice)
           max = baseDamage.number * baseDamage.denomination; // Maximum healing
           dieSize = baseDamage.denomination; // Die size
@@ -133,7 +133,15 @@ export function registerHandlebarsHelpers() {
   });
 
   Handlebars.registerHelper('getIcon', function (tray, options) {
-   
+
+     let spellLvl = (tray.spellLevel == 0) ? '' : tray.spellLevel;
+    if (spellLvl != '') { 
+      let romanNumeral = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];     
+      options.data.root['spellLevel'] = romanNumeral[spellLvl - 1];
+    }
+
+
+
     let icons = {
       slot: `<i class="fa-solid  fa-square icon-slot"></i>`,
       slotSpent: `<i class="fa-solid fa-square icon-slot-spent"></i>`,
@@ -144,7 +152,6 @@ export function registerHandlebarsHelpers() {
       pactSpent: `<i class="fa-solid fa-square icon-pact-spent"></i>`,
       ritual: `<i class="fa-solid fa-square icon-ritual"></i>`,
     };
-
     let trayIcon =
       tray.id == 'spell-0'
         ? 'cantrip'
@@ -154,7 +161,10 @@ export function registerHandlebarsHelpers() {
 
     switch (trayIcon) {
       case 'slot':
-        return icons.slot.repeat(tray.availableSlots)+icons.slotSpent.repeat(tray.totalSlots-tray.availableSlots);
+        return (
+          icons.slot.repeat(tray.availableSlots) +
+          icons.slotSpent.repeat(tray.totalSlots - tray.availableSlots)
+        );
       case 'action':
         return icons.action;
       case 'bonus':

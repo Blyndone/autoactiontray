@@ -55,6 +55,8 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.abilities = new Array(this.totalabilities).fill(null);
     this.init = false;
     Hooks.on('controlToken', this.update);
+    Hooks.on('updateActor', this.update.bind(this));
+     Hooks.on("updateItem", this.update.bind(this));
 
     registerHandlebarsHelpers();
   }
@@ -150,14 +152,14 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.customTrays = [commonTray, classTray, consumablesTray, customTray];
   }
 
-  update = (token) => {
+  update = (event) => {
     const start = performance.now(); // Start timing
 
-    if (token == null) {
+    if (event == null) {
       return;
     }
-    if (token.actor != this.actor) {
-      this.actor = token.actor;
+    if (event.actor != this.actor || this.actor == event) {
+      this.actor = event.actor ? event.actor : event;
       this.generateStaticTrays();
       this.generateCustomTrays();
       this.setDefaultTray();
@@ -178,6 +180,17 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
 
     const end = performance.now(); // End timing
     console.log(`Execution time - Update: ${end - start} ms`);
+  };
+
+  refresh = () => {
+    const start = performance.now(); // Start timing
+
+    if (this.actor == null) return;
+    this.staticTrays.forEach((e) => e.generateTray());
+    this.render(true);
+
+    const end = performance.now(); // End timing
+    console.log(`Execution time - Refresh: ${end - start} ms`);
   };
 
   static DEFAULT_OPTIONS = {
@@ -396,12 +409,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   static async useItem(event, target) {
     let itemId = target.dataset.itemId;
     let item = this.actor.items.get(itemId);
-    debugger;
-    await item.use().then((result) => {
-      debugger;
-      this.update();
-      this.render(true);
-    });
+    await item.use()
   }
 
   static selectWeapon(event, target) {

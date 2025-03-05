@@ -387,3 +387,19 @@ button:hover {
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
   margin: 3px;
 }
+
+.resource-spell-level-container {
+  position: relative;
+}
+
+.resource-spell-level {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20%);
+  padding: 5px 10px;
+  font-size: 16px;
+  color: white;
+  text-shadow: rgb(0, 0, 0) 0px 0 10px;
+}
