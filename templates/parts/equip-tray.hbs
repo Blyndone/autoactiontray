@@ -1,9 +1,13 @@
 <button
-  class="item-button"
-  data-item-id="{{item._id}}"
-  data-action="selectWeapon"
-><img src="{{this.meleeWeapon.img}}" alt="{{this.meleeWeapon.name}}" /></button>
-<button class="item-button" data-item-id="{{item._id}}"><img
-    src="{{this.rangedWeapon.img}}"
-    alt="{{this.rangedWeapon.name}}"
+  class='item-button'
+  data-item-id='{{this.meleeWeapon._id}}'
+  data-action='useItem'
+><img src='{{this.meleeWeapon.img}}' alt='{{this.meleeWeapon.name}}' /></button>
+<button
+  class='item-button'
+  data-item-id='{{this.rangedWeapon._id}}'
+  data-action='useItem'
+><img
+    src='{{this.rangedWeapon.img}}'
+    alt='{{this.rangedWeapon.name}}'
   /></button>

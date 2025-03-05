@@ -15,7 +15,7 @@
         "type": "system",
         "compatibility": {
           "minimum": "3.3.0",
-          "maximum": "3.3.99"
+          "maximum": "4.99.99"
         }
       }
     ]
