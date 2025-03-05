@@ -175,13 +175,13 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       this.setDefaultTray();
       this.meleeWeapon = this.actor.items.filter(
         (e) =>
-          e.system.type?.value === 'simpleM' ||
-          e.system.type?.value === 'martialM'&& e.system.equipped
+          (e.system.type?.value === 'simpleM' ||
+          e.system.type?.value === 'martialM')&& e.system.equipped
       )[0];
       this.rangedWeapon = this.actor.items.filter(
         (e) =>
-          e.system.type?.value === 'simpleR' ||
-          e.system.type?.value === 'martialR' && e.system.equipped
+          (e.system.type?.value === 'simpleR' ||
+          e.system.type?.value === 'martialR' )&& e.system.equipped
       )[0];
     }
 
