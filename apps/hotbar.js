@@ -102,6 +102,8 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
           category: 'spell',
           actorUuid: this.actor.uuid,
           spellLevel: level,
+          totalSlots: this.actor.system?.spells['spell' + level]?.max,
+          availableSlots: this.actor.system?.spells['spell' + level]?.value,
         })
       );
     });
@@ -394,8 +396,12 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   static async useItem(event, target) {
     let itemId = target.dataset.itemId;
     let item = this.actor.items.get(itemId);
-    await item.use();
-    this.render(true);
+    debugger;
+    await item.use().then((result) => {
+      debugger;
+      this.update();
+      this.render(true);
+    });
   }
 
   static selectWeapon(event, target) {

@@ -1,11 +1,11 @@
 {{#each staticTrays as |tray|}}
-  <button
-    class='resource-btn'
+  <div
+    class='resource-container'
     data-id='{{this.id}}'
     data-action='setTray'
     data-index={{@index}}
     data-type='static'
-  >{{this.id}}</button>
+  >{{{getIcon tray}}}</div>
 {{/each}}
 
 {{! <button

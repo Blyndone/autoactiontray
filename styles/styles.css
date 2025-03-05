@@ -20,7 +20,6 @@
   vertical-align: middle;
 }
 
-.resource-bar,
 .type-bar,
 .weapon-section {
   display: flex;
@@ -155,12 +154,54 @@ button:hover {
   font-size: 20px;
   border: 10px, #333;
 }
-
-.resource-btn {
+.resource-bar {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  align-items: center;
+  position: absolute;
+  top: -36px;
+  z-index: 1000;
+}
+.resource-container {
   background: rgb(97, 97, 95);
   width: 50px;
   height: 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-items: center; /* Centers the items horizontally */
+  align-items: center;
+  align-content: center; /* Centers the items vertically */
+  border: none; /* Optional: removes button border */
+  padding: 5px;
+  margin: 1px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 7px rgba(36, 36, 36, 0.6); /* Inner glow */
+  transition: all 0.3s ease; /* Smooth transition for hover and active states */
 }
+/* Hover effect - warm glow */
+.resource-container:hover {
+  box-shadow: inset 0 0 12px rgba(201, 89, 63, 0.8); /* Warm inner glow on hover */
+  cursor: pointer; /* Changes the cursor to a pointer */
+  transform: scale(1.1); /* Slightly enlarges the container */
+}
+
+/* Active effect - darker shadow and inward animation */
+.resource-container:active {
+  box-shadow: inset 0 0 20px rgba(201, 89, 63, 0.9); /* Stronger inner shadow on click */
+  transform: scale(
+    0.95
+  ); /* Slightly shrinks the container for a "press" effect */
+}
+
+/* Focus effect - outline with the warm color */
+.resource-container:focus {
+  outline: 3px solid rgba(201, 89, 63, 0.7); /* Focus outline with warm color */
+  box-shadow: inset 0 0 12px rgba(201, 89, 63, 0.7); /* Keeps warm glow on focus */
+}
+
 .type-btn {
   background: rgb(75, 75, 75);
   width: 100px;
@@ -299,3 +340,50 @@ button:hover {
 }
 
 /* ------------ */
+
+.icon-action {
+  color: rgb(179, 99, 1);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+  margin: 3px;
+}
+
+.icon-bonus {
+  color: darkgreen;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+  margin: 3px;
+}
+
+.icon-slot {
+  color: #00aaff; /* Glowing blue */
+  text-shadow: 0 0 8px rgba(0, 170, 255, 0.8);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+  margin: 3px;
+}
+
+.icon-slot-spent {
+  color: #5582a3; /* Depleted blue */
+  opacity: 0.6;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.6));
+  margin: 3px;
+}
+
+.icon-pact {
+  color: #aa00ff; /* Glowing purple */
+  text-shadow: 0 0 8px rgba(170, 0, 255, 0.8);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+  margin: 3px;
+}
+
+.icon-pact-spent {
+  color: #71528a; /* Depleted purple */
+  opacity: 0.6;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.6));
+  margin: 3px;
+}
+
+.icon-ritual {
+  color: #f1c15f; /* Glowing yellow */
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.8);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+  margin: 3px;
+}

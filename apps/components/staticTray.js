@@ -7,7 +7,10 @@ export class StaticTray extends AbilityTray {
     this.classResource = options.classResource;
     this.spellLevel = options.spellLevel;
     this.itemUsesUUID = options.itemUsesUUID || null;
+    this.totalSlots = options.totalSlots;
+    this.availableSlots = options.availableSlots;
     this.generateTray();
+  
   }
 
   generateTray() {
@@ -52,6 +55,7 @@ export class StaticTray extends AbilityTray {
             e.system.level === this.spellLevel &&
             e.system.preparation?.prepared == true
         );
+   
         this.id = 'spell-' + this.spellLevel;
         break;
 

@@ -29,7 +29,6 @@ export function registerHandlebarsHelpers() {
       damageType = '';
 
     let actionType = item.system?.activities?.contents[0].type;
-    // console.log(actionType, item.name, item.type);
 
     switch (true) {
       case item.type == 'weapon': {
@@ -106,7 +105,7 @@ export function registerHandlebarsHelpers() {
         break;
       }
       default:
-        console.log('default-' + item.name);
+        // console.log('default-' + item.name);
         break;
     }
 
@@ -115,20 +114,61 @@ export function registerHandlebarsHelpers() {
     options.data.root['actionType'] = capitalize(
       item.system?.activities?.contents[0].activation.type
     );
-    
+
     if (min == 0) return;
     if (min === max) return `${min} ${damageType}`;
-    
+
     if (saveType != '') {
-    options.data.root['saveType'] = `    ${saveType.toUpperCase()} - DC ${saveDc}`;
-  }
+      options.data.root[
+        'saveType'
+      ] = `    ${saveType.toUpperCase()} - DC ${saveDc}`;
+    }
     options.data.root['diceFormula'] = `🎲${min}d${dieSize}${
       bonus > 0 ? ' + ' + bonus : ''
     } ${damageType}`;
-    
+
     min += bonus;
     max += bonus;
     return `${min} ~ ${max}  Damage`;
+  });
+
+  Handlebars.registerHelper('getIcon', function (tray, options) {
+   
+    let icons = {
+      slot: `<i class="fa-solid  fa-square icon-slot"></i>`,
+      slotSpent: `<i class="fa-solid fa-square icon-slot-spent"></i>`,
+      action: `<i class="fa-solid fa-circle  icon-action"></i>`,
+      bonus: `<i class="fa-solid fa-triangle icon-bonus"></i>`,
+      cantrip: `<i class="fa-solid fa-square-dashed icon-slot"></i>`,
+      pact: `<i class="fa-solid fa-square icon-pact"></i>`,
+      pactSpent: `<i class="fa-solid fa-square icon-pact-spent"></i>`,
+      ritual: `<i class="fa-solid fa-square icon-ritual"></i>`,
+    };
+
+    let trayIcon =
+      tray.id == 'spell-0'
+        ? 'cantrip'
+        : tray.id.startsWith('spell-')
+        ? 'slot'
+        : tray.id;
+
+    switch (trayIcon) {
+      case 'slot':
+        return icons.slot.repeat(tray.availableSlots)+icons.slotSpent.repeat(tray.totalSlots-tray.availableSlots);
+      case 'action':
+        return icons.action;
+      case 'bonus':
+        return icons.bonus;
+      case 'cantrip':
+        return icons.cantrip;
+      case 'pact':
+        return icons.pact;
+      case 'ritual':
+        return icons.ritual;
+
+      default:
+        return '';
+    }
   });
 
   //max damage
