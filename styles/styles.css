@@ -221,7 +221,7 @@ button:hover {
     1px 1px 0px black;
 }
 
-/* ------------ */
+/* ------------------------------------------- */
 .tooltip-container {
   background: #2c1f12;
   border: 2px solid #704214;
@@ -235,35 +235,39 @@ button:hover {
 }
 
 .tooltip-header h2 {
-  margin: 0;
-  font-size: 20px;
+  padding: 2px;
+  font-size: 23px;
   color: #ffdb87;
 }
 
 .tooltip-subtitle {
-  font-size: 14px;
+  font-size: 16px;
   color: #bda069;
 }
 
 .tooltip-damage h3 {
-  font-size: 18px;
+  padding: 2px;
+  font-size: 20px;
   margin: 5px 0;
+  padding: 5px;
   color: #ffcc66;
 }
 
 .damage-type {
-  font-size: 16px;
+  font-size: 20px;
   color: #86d632;
+  padding: 5px;
 }
 
 .tooltip-description {
+  margin: 5px 0;
   font-size: 14px;
   color: #c8b08e;
+  word-wrap: break-word;
   display: -webkit-box;
-  -webkit-line-clamp: 10; /* Change this number to limit the lines */
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 15;
   overflow: hidden;
-  max-height: 250px;
 }
 
 .tooltip-effect {

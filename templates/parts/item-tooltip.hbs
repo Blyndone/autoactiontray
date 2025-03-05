@@ -1,17 +1,23 @@
 <div class='tooltip-container'>
   <div class='tooltip-header'>
     <h2>{{name}}</h2>
-    <p class='tooltip-subtitle'>{{type}}</p>
+    <p class='tooltip-subtitle'>{{capitalize type}}</p>
   </div>
-  {{!-- <div class='tooltip-damage'>
-    {{log item}}
-    <h3>{{minDamage}}~{{maxDamage}} Damage</h3>
-    <p class='damage-type'>Dice Formula
-      <span class='damage-type-text'>Damage Type</span></p>
-  </div> --}}
+
+  <div class='tooltip-damage'>
+
+    <h3>{{damageCal item}}</h3>
+    {{#if @root.diceFormula}}
+      <div class='damage-type'>{{@root.diceFormula}}
+      </div>
+    {{/if}}
+
+  </div>
+
   <div class='tooltip-description'>
-    <p>{{system.description.value}}</p>
-    <p class='tooltip-effect'>{{effect}}</p>
+
+    {{system.description.value}}
+    {{!-- <p class='tooltip-effect'>{{effect}}</p> --}}
   </div>
 
   {{! <div class='tooltip-duration'>
@@ -20,16 +26,32 @@
   </div> }}
 
   <div class='tooltip-info'>
-    <span class='range-icon'>📏</span>
-    {{system.range.reach}}
-    {{system.range.value}}
-    ft.
+    {{#if system.range.reach}}
+      <span class='range-icon'>⚔️</span>
+      {{system.range.reach}}
+      ft. Melee
+    {{/if}}
+    {{#if system.range.value}}
+      <span class='range-icon'>🏹</span>
+      {{system.range.value}}
+      {{#if system.range.long}}
+        /
+        {{system.range.long}}
+      {{/if}}
+      ft.
+    {{/if}}
+    <span>
+      {{#if @root.saveType}}
+        🛡️{{@root.saveType}}
+      {{/if}}
+    </span>
+
     {{!-- <span class='save-icon'>🛡️</span>
     {{saveType}}
     Save --}}
   </div>
 
   <div class='tooltip-footer'>
-    <span class='action-tag'>Action</span>
+    <span class='action-tag'>{{@root.actionType}}</span>
   </div>
 </div>
