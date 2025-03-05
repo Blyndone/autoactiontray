@@ -55,8 +55,8 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.abilities = new Array(this.totalabilities).fill(null);
     this.init = false;
     Hooks.on('controlToken', this.update);
-    Hooks.on('updateActor', this.update.bind(this));
-     Hooks.on("updateItem", this.update.bind(this));
+    Hooks.on('updateActor', this._onUpdateActor.bind(this));
+    Hooks.on('updateItem', this._onUpdateItem.bind(this));
 
     registerHandlebarsHelpers();
   }
@@ -123,8 +123,8 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       ritualTray,
     ];
     this.staticTrays = this.staticTrays.filter((e) => e.abilities?.length > 0);
-
-    console.log(this.staticTrays);
+    this.render(true);
+    // console.log(this.staticTrays);
   }
 
   generateCustomTrays() {
@@ -152,6 +152,16 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.customTrays = [commonTray, classTray, consumablesTray, customTray];
   }
 
+  _onUpdateItem(item, change, options, userId) {
+    if (item.actor != this.actor) return;
+    this.generateStaticTrays();
+    this.refresh();
+  }
+
+  _onUpdateActor(actor, change, options, userId) {
+    if (actor != this.actor) return;
+    this.generateStaticTrays();
+  }
   update = (event) => {
     const start = performance.now(); // Start timing
 
@@ -183,14 +193,16 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   };
 
   refresh = () => {
-    const start = performance.now(); // Start timing
-
     if (this.actor == null) return;
-    this.staticTrays.forEach((e) => e.generateTray());
-    this.render(true);
+    this.currentTray = this.staticTrays.find((e) => e.id == this.currentTray.id)
+      ? this.staticTrays.find((e) => e.id == this.currentTray.id)
+      : this.customTrays.find((e) => e.id == this.currentTray.id);
 
-    const end = performance.now(); // End timing
-    console.log(`Execution time - Refresh: ${end - start} ms`);
+    this.abilities = this.padArray(
+      this.currentTray.abilities,
+      this.totalabilities
+    );
+    this.render(true);
   };
 
   static DEFAULT_OPTIONS = {
@@ -375,6 +387,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   }
 
   static setTray(event, target) {
+
     let targetTray;
     if (target.dataset.type === 'static') {
       this.currentTrayTemplate = 'AAT.full-tray';
@@ -409,7 +422,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   static async useItem(event, target) {
     let itemId = target.dataset.itemId;
     let item = this.actor.items.get(itemId);
-    await item.use()
+    await item.use();
   }
 
   static selectWeapon(event, target) {
@@ -487,6 +500,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
    * @protected
    */
   _onDragStart(event) {
+    game.tooltip.deactivate();
     const li = event.currentTarget;
 
     if (event.target.classList.contains('content-link')) return;

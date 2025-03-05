@@ -32,7 +32,21 @@ Hooks.once("init", async function() {
 
 Hooks.once("ready", async function() {
   console.log("-------Ready-----------");
-  let hotbar = new AutoActionTray();
-  hotbar.render(true);
+
+  game.settings.register("auto-action-tray", "enable", {
+    name: "Enabled",
+    hint: "Enable or Disable the Hotbar",
+    scope: "client", // "world" = sync to db, "client" = local storage
+    config: true, // false if you dont want it to show in module config
+
+    type: Boolean,
+    default: false,
+
+    requiresReload: true // true if you want to prompt the user to reload
+    /** Creates a select dropdown */
+  });
+  if (game.settings.get("auto-action-tray", "enable")) {
+    let hotbar = new AutoActionTray();
+    hotbar.render(true);
+  }
 });
-9;
