@@ -13,6 +13,9 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   constructor(options = {}) {
     super(options);
 
+    this.animating = false;
+    this.animationDuration = .8;
+
     this.abilityHeight = 2;
 
     this.section1Width = 3;
@@ -44,6 +47,8 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.rangedWeapon = null;
 
     this.currentTray = null;
+    this.currentCustomTray = null;
+    this.currentStaticTray = null;
 
     this.currentTrayTemplate = 'AAT.full-tray';
 
@@ -62,9 +67,9 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   }
 
   setDefaultTray() {
-    let targetTray = this.customTrays.find((e) => e.id == 'common');
-    this.abilities = this.padArray(targetTray.abilities, this.totalabilities);
-    this.currentTray = targetTray;
+    this.currentTray = this.customTrays.find((e) => e.id == 'common');
+    // this.abilities = this.currentTray.getAbilities();
+    this.currentTray.active = true;
     this.render();
   }
 
@@ -89,6 +94,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       this.staticTrays = StaticTray.generateStaticTrays(this.actor);
       this.customTrays = CustomTray.generateCustomTrays(this.actor);
       this.setDefaultTray();
+
       this.meleeWeapon = this.actor.items.filter(
         (e) =>
           (e.system.type?.value === 'simpleM' ||
@@ -106,15 +112,13 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   };
 
   refresh = () => {
-    if (this.actor == null) return;
+    if (this.animating == true || this.actor == null) return;
+
     this.currentTray = this.staticTrays.find((e) => e.id == this.currentTray.id)
       ? this.staticTrays.find((e) => e.id == this.currentTray.id)
       : this.customTrays.find((e) => e.id == this.currentTray.id);
-
-    this.abilities = this.padArray(
-      this.currentTray.abilities,
-      this.totalabilities
-    );
+    // this.abilities = this.currentTray.getAbilities();
+    this.currentTray.active = true;
     this.render(true);
   };
 
@@ -213,9 +217,11 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       totalabilities: this.totalabilities,
       currentTrayTemplate: this.currentTrayTemplate,
       currentTray: this.currentTray,
+      targetTray: this.targetTray,
       allAbilities: this.allAbilities,
       staticTrays: this.staticTrays,
       staticTray: this.staticTray,
+      customTrays: this.customTrays,
     };
 
     return context;
@@ -290,46 +296,106 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.actor.sheet.render(true);
   }
 
+  animateSwapTrays(tray1, tray2) {
+  
+    this.animating = true;
+
+    gsap.fromTo(
+      '.' + tray1.id,
+      {
+        opacity: 0,
+        y: tray1.type == 'static' ? -200 : 0,
+        x: tray1.type == 'custom' ? 1000 : 0,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        x: 0,
+        duration: this.animationDuration,
+        onStart: () => {},
+      }
+    );
+
+    gsap.to('.' + tray2.id, {
+      opacity: 0,
+      y: tray2.type == 'static' ? -200 : 0,
+      x: tray2.type == 'custom' ? 1000 : 0,
+      duration: this.animationDuration,
+      onStart: () => {},
+      onComplete: () => {
+        this.animating = false;
+        this.currentTray.active = false;
+        this.targetTray.active = true;
+        this.currentTray = this.targetTray;
+        this.refresh();
+      },
+    });
+  }
+
+  animateTray(tray, active) {
+    tray.active = true;
+    switch (true) {
+      case tray == '.static-tray' || tray.type == 'static':
+        gsap.set(`.${tray.id}`, {
+          opacity: active ? 0 : 1,
+          y: active ? -200 : 0,
+        });
+
+        gsap.to(`.${tray.id}`, {
+          opacity: active ? 1 : 0,
+          y: active ? 0 : -200,
+          duration: 1,
+          onStart: () => {
+            this.animating = true;
+          },
+          onComplete: () => {
+            this.animating = false;
+            tray.active = active;
+            this.refresh();
+          },
+        });
+        break;
+
+      case tray == '.custom-tray' || tray.type == 'custom':
+        gsap.to('.custom-tray', {
+          opacity: active ? 1 : 0,
+          x: active ? 0 : 1000,
+          duration: 1,
+          onStart: () => {
+            this.animating = true;
+          },
+          onComplete: () => {
+            this.animating = false;
+            tray.active = false;
+            this.refresh();
+          },
+        });
+        break;
+    }
+  }
+
   static async endTurn(event, target) {
     this.actor.unsetFlag('auto-action-tray', 'data');
-    gsap.to('.custom-tray', { opacity: 0, x: 1000, duration: 1 });
-    gsap.to('.static-tray', { opacity: 0, y: -200, duration: 1 });
-    await setTimeout(() => {
-      // gsap.to('.abilities-tray', { opacity: 1, x: 0, duration: 1 });
-    }, 2000); // 2000ms = 2 seconds
   }
 
-  static setTray(event, target) {
-    let targetTray;
-    if (target.dataset.type === 'static') {
-      this.currentTrayTemplate = 'AAT.full-tray';
-      targetTray = this.staticTrays[target.dataset.index];
-      this.abilities = this.padArray(targetTray.abilities, this.totalabilities);
-      this.currentTray = targetTray;
-    } else {
-      this.currentTrayTemplate = 'AAT.full-tray';
-      targetTray = this.customTrays.find((e) => e.id == target.dataset.id);
-      this.abilities = this.padArray(targetTray.abilities, this.totalabilities);
-      this.currentTray = targetTray;
-      this.currentTray.getAbilities();
-    }
-    switch (target.dataset.id) {
-      case 'action':
-        break;
-      case 'bonus':
-        break;
-      case 'class':
-        break;
-      case 'spell':
-        break;
-    }
-    this.render(true);
+  static async setTray(event, target) {
+    if (this.animating == true) return;
+
+    this.targetTray = this.staticTrays.find((e) => e.id == target.dataset.id)
+      ? this.staticTrays.find((e) => e.id == target.dataset.id)
+      : this.customTrays.find((e) => e.id == target.dataset.id);
+    this.targetTray.active = true;
+    this.currentTray.active = true;
+
+    if (this.currentTray == this.targetTray) return;
+  
+
+    await this.render(true);
+    this.animateSwapTrays(this.targetTray, this.currentTray);
+
   }
 
-  padArray(arr, length = 20, filler = null) {
-    if (arr == null) return new Array(length).fill(filler);
-    return [...arr, ...Array(Math.max(0, length - arr.length)).fill(filler)];
-  }
+ 
 
   static async useItem(event, target) {
     let itemId = target.dataset.itemId;

@@ -26,6 +26,26 @@
   {{> (lookup . "currentTrayTemplate") }}
     </div> --}}
 
+{{#each staticTrays as |tray|}}
+{{#if tray.active}}
+  <div class="abilities-tray static-tray {{{tray.id}}}">
+ {{>  "AAT.full-tray" tray=tray}}
+  
+    </div>
+{{/if}}
+{{/each}}
+
+{{#each customTrays as |tray|}}
+{{#if tray.active}}
+  <div class="abilities-tray custom-tray {{{tray.id}}}">
+ {{>  "AAT.full-tray" tray=tray}}
+  
+    </div>
+{{/if}}
+{{/each}}
+
+
+{{!-- 
  <div class="abilities-tray static-tray">
   {{> (lookup . "currentTrayTemplate") }}
     </div>
@@ -33,7 +53,7 @@
   
  <div class="abilities-tray custom-tray">
   {{> (lookup . "currentTrayTemplate") }}
-    </div>
+    </div> --}}
 
 
 </div>  

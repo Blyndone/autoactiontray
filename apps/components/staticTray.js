@@ -10,6 +10,7 @@ export class StaticTray extends AbilityTray {
     this.totalSlots = options.totalSlots;
     this.availableSlots = options.availableSlots;
     this.type = 'static';
+    this.active = false;
     this.generateTray();
   }
 
@@ -52,12 +53,14 @@ export class StaticTray extends AbilityTray {
         break;
 
       case 'spell':
-        this.abilities = allItems.filter(
-          (e) =>
-            e.system.level <= this.spellLevel &&
-            e.system.preparation?.prepared == true &&
-            e.system.level != 0
-        ).sort((a, b) => b.system.level - a.system.level);
+        this.abilities = allItems
+          .filter(
+            (e) =>
+              e.system.level <= this.spellLevel &&
+              e.system.preparation?.prepared == true &&
+              e.system.level != 0
+          )
+          .sort((a, b) => b.system.level - a.system.level);
 
         this.id = 'spell-' + this.spellLevel;
         break;
@@ -127,8 +130,14 @@ export class StaticTray extends AbilityTray {
       ...spellTray,
       ritualTray,
     ];
-    return this.staticTrays.filter((e) => e.abilities?.length > 0);
-    this.render(true);
-    // console.log(this.staticTrays);
+
+    this.staticTrays = this.staticTrays.filter((e) => ((e.abilities)  && e.abilities.length > 0))
+    this.staticTrays.forEach((e) => {e.abilities = AbilityTray.padArray(e.abilities, 20)})
+
+    return this.staticTrays;
+  }
+
+  getAbilities() {
+    return this.abilities;
   }
 }

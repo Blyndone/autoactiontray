@@ -6,6 +6,7 @@ export class CustomTray extends AbilityTray {
     this.savedDate = false;
     this.category = options.category;
     this.id = options.id;
+    this.type = 'custom';
 
     if (!this.savedData && !this.checkSavedData(this.id)) {
       console.log('Generating Custom Trays');
@@ -49,6 +50,8 @@ export class CustomTray extends AbilityTray {
         this.id = 'custom';
         break;
     }
+
+    this.abilities = AbilityTray.padArray(this.abilities, 20);
   }
 
     static generateCustomTrays(actor) {
