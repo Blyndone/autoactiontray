@@ -9,7 +9,7 @@
   position: absolute;
   bottom: 15px;
   left: 600px;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .character-image img {

@@ -1,8 +1,9 @@
 const { ApplicationV2 } = foundry.applications.api;
 const { api, sheets } = foundry.applications;
 import { AbilityTray } from './components/abilityTray.js';
-import { CustomTray } from './components/customtray.js';
+import { CustomTray } from './components/customTray.js';
 import { StaticTray } from './components/staticTray.js';
+import { EquipmentTray } from './components/equipmentTray.js';
 import { registerHandlebarsHelpers } from './helpers/handlebars.js';
 
 export class AutoActionTray extends api.HandlebarsApplicationMixin(
@@ -14,7 +15,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     super(options);
 
     this.animating = false;
-    this.animationDuration = .8;
+    this.animationDuration = 0.8;
 
     this.abilityHeight = 2;
 
@@ -56,6 +57,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
 
     this.customTrays = [];
     this.staticTrays = [];
+    this.equipmentTray = null;
 
     this.abilities = new Array(this.totalabilities).fill(null);
     this.init = false;
@@ -93,20 +95,10 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       this.actor = event.actor ? event.actor : event;
       this.staticTrays = StaticTray.generateStaticTrays(this.actor);
       this.customTrays = CustomTray.generateCustomTrays(this.actor);
+      this.equipmentTray = EquipmentTray.generateCustomTrays(this.actor);
       this.setDefaultTray();
-
-      this.meleeWeapon = this.actor.items.filter(
-        (e) =>
-          (e.system.type?.value === 'simpleM' ||
-            e.system.type?.value === 'martialM') &&
-          e.system.equipped
-      )[0];
-      this.rangedWeapon = this.actor.items.filter(
-        (e) =>
-          (e.system.type?.value === 'simpleR' ||
-            e.system.type?.value === 'martialR') &&
-          e.system.equipped
-      )[0];
+      this.meleeWeapon = this.equipmentTray.getMeleeWeapon();
+      this.rangedWeapon = this.equipmentTray.getRangedWeapon();
     }
     this.refresh();
   };
@@ -222,6 +214,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       staticTrays: this.staticTrays,
       staticTray: this.staticTray,
       customTrays: this.customTrays,
+      equipmentTray: this.equipmentTray,
     };
 
     return context;
@@ -297,7 +290,6 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   }
 
   animateSwapTrays(tray1, tray2) {
-  
     this.animating = true;
 
     gsap.fromTo(
@@ -388,14 +380,10 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.currentTray.active = true;
 
     if (this.currentTray == this.targetTray) return;
-  
 
     await this.render(true);
     this.animateSwapTrays(this.targetTray, this.currentTray);
-
   }
-
- 
 
   static async useItem(event, target) {
     let itemId = target.dataset.itemId;
@@ -528,10 +516,34 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       return;
     }
 
-    let target = this.actor.items.get(event.target.dataset.itemId);
+    let target =
+      this.actor.items.get(event.target.dataset.itemId) ||
+      this.actor.items.get(event.target.parentElement.dataset.itemId);
 
     let index = event.target.dataset.index;
+    if (event.target.parentElement.dataset.index === 'meleeWeapon') {
+      this.equipmentTray.setMeleeWeapon(fromUuidSync(data.uuid));
+      this.refresh();
+      return;
+    } else if (event.target.parentElement.dataset.index === 'rangedWeapon') {
+      this.equipmentTray.setRangedWeapon(fromUuidSync(data.uuid));
+      this.refresh();
+      return;
+    }
+
     if (!index) return;
+    if (index == 'meleeWeapon') {
+      let item = fromUuidSync(data.uuid);
+      this.equipmentTray.setMeleeWeapon(item);
+      this.refresh();
+      return;
+    }
+    if (index == 'rangedWeapon') {
+      let item = fromUuidSync(data.uuid);
+      this.equipmentTray.setRangedWeapon(item);
+      this.refresh();
+      return;
+    }
 
     // Handle different data types
     switch (data.type) {

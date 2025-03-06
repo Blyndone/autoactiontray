@@ -3,16 +3,17 @@ import { AbilityTray } from './abilityTray.js';
 export class CustomTray extends AbilityTray {
   constructor(options = {}) {
     super(options);
-    this.savedDate = false;
+    this.savedData = false;
     this.category = options.category;
     this.id = options.id;
     this.type = 'custom';
 
     if (!this.savedData && !this.checkSavedData(this.id)) {
-      console.log('Generating Custom Trays');
+      // console.log('Generating Custom Trays');
+
       this.generateTray();
     } else {
-      console.log('Getting Saved Data');
+      //   console.log('Getting Saved Data');
       this.getSavedData();
     }
   }
@@ -37,7 +38,6 @@ export class CustomTray extends AbilityTray {
         this.id = 'common';
         break;
       case 'classFeatures':
-      
         this.abilities = allItems.filter((e) => e.type === 'feat');
         this.id = 'classFeatures';
         break;
@@ -75,6 +75,7 @@ export class CustomTray extends AbilityTray {
       id: 'custom',
       actorUuid: actor.uuid,
     });
+
     return [commonTray, classTray, consumablesTray, customTray];
   }
 
@@ -89,12 +90,14 @@ export class CustomTray extends AbilityTray {
     let actor = fromUuidSync(this.actorUuid);
 
     let data = actor.getFlag('auto-action-tray', 'data');
-    if (data[this.id]?.abilities != null) {
-      this.abilities = JSON.parse(data[this.id].abilities).map((e) =>
-        e ? actor.items.get(e) : null
-      );
+    if (data) {
+      if (data[this.id]?.abilities != null) {
+        this.abilities = JSON.parse(data[this.id].abilities).map((e) =>
+          e ? actor.items.get(e) : null
+        );
+        this.savedData = true;
+      }
     }
-    this.savedData = true;
   }
 
   setSavedData() {
@@ -105,6 +108,7 @@ export class CustomTray extends AbilityTray {
         [this.id]: { abilities: JSON.stringify(temparr) },
       });
     }
+    this.savedData = true;
   }
 
   setAbility(index, ability) {
