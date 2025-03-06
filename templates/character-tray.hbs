@@ -45,15 +45,6 @@
 {{/each}}
 
 
-{{!-- 
- <div class="abilities-tray static-tray">
-  {{> (lookup . "currentTrayTemplate") }}
-    </div>
-
-  
- <div class="abilities-tray custom-tray">
-  {{> (lookup . "currentTrayTemplate") }}
-    </div> --}}
 
 
 </div>  
@@ -66,8 +57,14 @@
 
   </div>
 
-  <div class="type-bar">
-  {{> "AAT.type-tray" }}
+
+  <div class="type-bar ">
+    {{#each customTrays as |tray|}}
+        {{> "AAT.type-tray" tray=tray}}
+    {{/each}}
   </div>
+
+
+  
 
 </div>

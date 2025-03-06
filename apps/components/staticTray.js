@@ -53,6 +53,18 @@ export class StaticTray extends AbilityTray {
         break;
 
       case 'spell':
+        if (this.spellLevel == 0) {
+          this.abilities = allItems
+            .filter(
+              (e) =>
+                e.system.level == this.spellLevel &&
+                e.system.preparation?.prepared == true 
+      
+          )
+          this.id = 'spell-' + this.spellLevel;
+          break;
+        }
+        
         this.abilities = allItems
           .filter(
             (e) =>

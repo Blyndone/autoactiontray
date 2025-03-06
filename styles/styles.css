@@ -27,6 +27,15 @@
   gap: 1px;
 }
 
+.type-bar-active {
+  box-shadow: inset 0 0 15px rgba(255, 140, 0, 0.9); /* Stronger warm glow */
+  background: rgb(120, 60, 40); /* Slightly different background for contrast */
+  color: white; /* Ensures text is readable */
+  border: 2px rgba(255, 140, 0, 0.9); /* Adds a glowing border */
+  width: 100px;
+  height: 30x;
+}
+
 .spells-section {
   display: flex;
   flex-direction: row;
@@ -182,6 +191,15 @@ button:hover {
   box-shadow: inset 0 0 7px rgba(36, 36, 36, 0.6); /* Inner glow */
   transition: all 0.3s ease; /* Smooth transition for hover and active states */
 }
+
+.resource-container-active {
+  box-shadow: inset 0 0 15px rgba(255, 140, 0, 0.9); /* Stronger warm glow */
+
+  background: rgb(120, 60, 40); /* Slightly different background for contrast */
+  color: white; /* Ensures text is readable */
+  border: 2px rgba(255, 140, 0, 0.9); /* Adds a glowing border */
+}
+
 /* Hover effect - warm glow */
 .resource-container:hover {
   box-shadow: inset 0 0 12px rgba(201, 89, 63, 0.8); /* Warm inner glow on hover */
@@ -190,6 +208,13 @@ button:hover {
 }
 
 /* Active effect - darker shadow and inward animation */
+.resource-container:active {
+  box-shadow: inset 0 0 20px rgba(201, 89, 63, 0.9); /* Stronger inner shadow on click */
+  transform: scale(
+    0.95
+  ); /* Slightly shrinks the container for a "press" effect */
+}
+
 .resource-container:active {
   box-shadow: inset 0 0 20px rgba(201, 89, 63, 0.9); /* Stronger inner shadow on click */
   transform: scale(

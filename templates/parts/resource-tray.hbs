@@ -2,14 +2,18 @@
   <div class='resource-spell-level-container'>
 
     <div
-      class='resource-container'
+      class='resource-container 
+    {{#if tray.active}}resource-container-active{{/if}}'
+      
       data-id='{{this.id}}'
       data-action='setTray'
       data-index={{@index}}
       data-type='static'
+    {{#if tray.active}}{{/if}}
+
     >{{{getIcon tray}}}
     </div>
-    <div class='resource-spell-level'>{{@root.spellLevel}}</div>
+    <div class='resource-spell-level '>{{@root.spellLevel}}</div>
   </div>
 {{/each}}
 
