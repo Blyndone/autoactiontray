@@ -8,7 +8,8 @@
   border-radius: 8px;
   position: absolute;
   bottom: 15px;
-  left: 600px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 100;
 }
 
@@ -53,18 +54,18 @@
 
 .current-tray {
   overflow: hidden;
-  width: 800px;
-  height: 155px;
+  width: 710px;
+  height: 170px;
   position: relative;
-  display: flex; /* Helps keep child elements inside */
+  display: flex;
   justify-content: center;
-  align-items: center;
+  background: #5b5b5b;
 }
 
 .abilities-tray {
   gap: 1px;
   position: absolute;
-  width: 800px;
+  /* width: 800px; */
   flex-direction: row;
 }
 
@@ -137,6 +138,7 @@
   align-items: center;
   background: rgba(117, 117, 117, 0.7);
   padding: 10px;
+  width: 1270px;
 }
 
 button {
@@ -253,10 +255,9 @@ button:hover {
 }
 /* Vertical Divider */
 .divider {
-  width: 5px;
+  width: 3px;
   height: 100%;
   background: rgb(212, 0, 0);
-  margin: 0 5px;
 }
 
 .transparent-box {
