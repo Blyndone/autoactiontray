@@ -403,6 +403,7 @@ button:hover {
   font-size: 16px;
   color: white;
   text-shadow: rgb(0, 0, 0) 0px 0px 6px, rgb(0, 0, 0) 0px 0px 6px;
+  pointer-events: none;
 }
 
 .spell-item-container {
