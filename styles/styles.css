@@ -60,8 +60,9 @@
 }
 
 .abilities-tray ol {
+  height: 160px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   list-style-type: none;
   padding: 0px;
@@ -401,5 +402,44 @@ button:hover {
   padding: 5px 10px;
   font-size: 16px;
   color: white;
-  text-shadow: rgb(0, 0, 0) 0px 0 10px;
+  text-shadow: rgb(0, 0, 0) 0px 0px 6px, rgb(0, 0, 0) 0px 0px 6px;
+}
+
+.spell-item-container {
+  position: relative;
+}
+
+.spell-item-container-text {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5px 10px;
+  font-size: 22px;
+  color: white;
+  text-shadow: rgb(0, 0, 0) 0px 0px 6px, rgb(0, 0, 0) 0px 0px 6px,
+    rgb(0, 0, 0) 0px 0px 6px;
+  pointer-events: none;
+}
+
+.spell-item-container-text-upcast {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+  position: absolute;
+  transform: translateY(-5%);
+  top: 0px;
+  right: 0px;
+  padding: 0px 5px;
+  font-size: 20px;
+  color: white;
+  text-shadow: rgb(0, 0, 0) 0px 0px 6px, rgb(0, 0, 0) 0px 0px 6px,
+    rgb(0, 0, 0) 0px 0px 6px;
+  pointer-events: none;
+}
+
+.spell-item-container-img-upcast {
+  filter: grayscale(90%);
+}
+.spell-item-container-img-upcast:hover {
+  filter: grayscale(0%);
 }

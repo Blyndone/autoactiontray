@@ -131,7 +131,12 @@ export function registerHandlebarsHelpers() {
     max += bonus;
     return `${min} ~ ${max}  Damage`;
   });
-
+  
+  Handlebars.registerHelper('getRomanNumeral', function (spellLvl) {
+  let romanNumeral = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];     
+    return romanNumeral[spellLvl - 1];
+  })
+    
   Handlebars.registerHelper('getIcon', function (tray, options) {
 
      let spellLvl = (tray.spellLevel == 0) ? '' : tray.spellLevel;
