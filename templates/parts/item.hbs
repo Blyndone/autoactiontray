@@ -1,5 +1,4 @@
 <li>
-
   {{#if item}}
     <div
       data-drag='true'
@@ -14,7 +13,8 @@
     {{#if (eq item.type 'spell')}}
 
                                                 
-     {{> AAT.item-spell item=item index=@index  }}
+
+     {{> AAT.item-spell item=item index=@index tray=tray}}  
                                                                             
         {{else}}
           <img

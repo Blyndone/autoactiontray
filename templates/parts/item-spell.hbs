@@ -1,6 +1,6 @@
 <div class='spell-item-container'>
 
-  {{#if (eq @root.currentTray.id 'ritual')}}
+  {{#if (eq tray.id 'ritual')}}
     <img
       src='{{item.img}}'
       alt='{{item.name}}'
@@ -8,8 +8,8 @@
       data-index='{{@index}}'
     />
   {{else}}
-    {{#if (eq @root.currentTray.type 'static')}}
-      {{#if (eq item.system.level @root.currentTray.spellLevel)}}
+    {{#if (eq tray.type 'static')}}
+      {{#if (eq item.system.level tray.spellLevel)}}
         <img
           src='{{item.img}}'
           alt='{{item.name}}'
