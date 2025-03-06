@@ -39,7 +39,7 @@ export class StaticTray extends AbilityTray {
         this.id = 'bonus';
         break;
 
-      case 'class':
+      case 'classFeatures':
         if (this.itemUsesUUID) {
           this.abilities = allItems.filter((e) =>
             e.system.activities?.some((activity) =>
@@ -49,7 +49,7 @@ export class StaticTray extends AbilityTray {
             )
           );
         }
-        this.id = 'class';
+        this.id = 'classFeatures';
         break;
 
       case 'spell':
@@ -84,7 +84,7 @@ export class StaticTray extends AbilityTray {
       actorUuid: actor.uuid,
     });
     let classTray = new StaticTray({
-      category: 'class',
+      category: 'classFeatures',
       actorUuid: actor.uuid,
     });
     let spellTray = [];
