@@ -54,7 +54,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
 
     this.abilities = new Array(this.totalabilities).fill(null);
     this.init = false;
-    Hooks.on('controlToken', this.update);
+    Hooks.on('controlToken', this._onControlToken);
     Hooks.on('updateActor', this._onUpdateActor.bind(this));
     Hooks.on('updateItem', this._onUpdateItem.bind(this));
 
@@ -67,128 +67,42 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.currentTray = targetTray;
     this.render();
   }
-  generateStaticTrays() {
-    let actionTray = new StaticTray({
-      category: 'action',
-      actorUuid: this.actor.uuid,
-    });
-    let bonusTray = new StaticTray({
-      category: 'bonus',
-      actorUuid: this.actor.uuid,
-    });
-    let classTray = new StaticTray({
-      category: 'class',
-      actorUuid: this.actor.uuid,
-    });
-    let spellTray = [];
-
-    let slots = this.actor.system.spells;
-
-    let levels = Object.keys(slots)
-      .filter((key) => slots[key].value > 0)
-      .map((key) => slots[key].level);
-
-    let allItems = this.actor.items.filter((e) => e.system?.activities?.size);
-    let spells = allItems.filter(
-      (e) => e.type === 'spell' && e.system.preparation.prepared == true
-    );
-
-    if (spells.length > 0) {
-      levels = [
-        ...new Set([...levels, ...spells.map((x) => x.system.level)]),
-      ].sort((a, b) => a - b);
-    }
-    levels.forEach((level) => {
-      spellTray.push(
-        new StaticTray({
-          category: 'spell',
-          actorUuid: this.actor.uuid,
-          spellLevel: level,
-          totalSlots: this.actor.system?.spells['spell' + level]?.max,
-          availableSlots: this.actor.system?.spells['spell' + level]?.value,
-        })
-      );
-    });
-
-    let ritualTray = new StaticTray({
-      category: 'ritual',
-      actorUuid: this.actor.uuid,
-    });
-
-    this.staticTrays = [
-      actionTray,
-      bonusTray,
-      classTray,
-      ...spellTray,
-      ritualTray,
-    ];
-    this.staticTrays = this.staticTrays.filter((e) => e.abilities?.length > 0);
-    this.render(true);
-    // console.log(this.staticTrays);
-  }
-
-  generateCustomTrays() {
-    let commonTray = new CustomTray({
-      category: 'common',
-      id: 'common',
-      actorUuid: this.actor.uuid,
-    });
-    let classTray = new CustomTray({
-      category: 'class',
-      id: 'class',
-      actorUuid: this.actor.uuid,
-    });
-    let consumablesTray = new CustomTray({
-      category: 'items',
-      id: 'items',
-      actorUuid: this.actor.uuid,
-    });
-
-    let customTray = new CustomTray({
-      category: 'custom',
-      id: 'custom',
-      actorUuid: this.actor.uuid,
-    });
-    this.customTrays = [commonTray, classTray, consumablesTray, customTray];
-  }
 
   _onUpdateItem(item, change, options, userId) {
     if (item.actor != this.actor) return;
-    this.generateStaticTrays();
+    this.staticTrays = StaticTray.generateStaticTrays(this.actor);
     this.refresh();
   }
 
   _onUpdateActor(actor, change, options, userId) {
     if (actor != this.actor) return;
-    this.generateStaticTrays();
+    // if (item.actor != this.actor) return;
+    this.staticTrays = StaticTray.generateStaticTrays(this.actor);
+    this.refresh();
   }
-  update = (event) => {
-    const start = performance.now(); // Start timing
-
+  _onControlToken = (event) => {
     if (event == null) {
       return;
     }
     if (event.actor != this.actor || this.actor == event) {
       this.actor = event.actor ? event.actor : event;
-      this.generateStaticTrays();
-      this.generateCustomTrays();
+      this.staticTrays = StaticTray.generateStaticTrays(this.actor);
+      this.customTrays = CustomTray.generateCustomTrays(this.actor);
       this.setDefaultTray();
       this.meleeWeapon = this.actor.items.filter(
         (e) =>
           (e.system.type?.value === 'simpleM' ||
-          e.system.type?.value === 'martialM')&& e.system.equipped
+            e.system.type?.value === 'martialM') &&
+          e.system.equipped
       )[0];
       this.rangedWeapon = this.actor.items.filter(
         (e) =>
           (e.system.type?.value === 'simpleR' ||
-          e.system.type?.value === 'martialR' )&& e.system.equipped
+            e.system.type?.value === 'martialR') &&
+          e.system.equipped
       )[0];
     }
-
-    this.render(true);
-
-    const end = performance.now(); // End timing
-    console.log(`Execution time - Update: ${end - start} ms`);
+    this.refresh();
   };
 
   refresh = () => {
@@ -386,7 +300,6 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   }
 
   static setTray(event, target) {
-
     let targetTray;
     if (target.dataset.type === 'static') {
       this.currentTrayTemplate = 'AAT.full-tray';

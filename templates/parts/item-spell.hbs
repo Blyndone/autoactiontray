@@ -1,0 +1,30 @@
+<div>
+  <img
+    src='{{item.img}}'
+    alt='{{item.name}}'
+    data-item-id='{{item._id}}'
+    data-index='{{@index}}'
+    {{#if (eq @root.currentTray.type 'static')}}
+    {{#if (eq item.system.level @root.currentTray.spellLevel)}}
+    {{else}}
+    style = " filter: grayscale(100%);"
+    {{/if}}
+    {{else}}
+    {{/if}}
+  />
+
+  {{log @root.currentTray}}
+  {{log item}}
+  {{log @root.data}}
+
+  {{#if (eq item.type 'consumable')}}
+    <div class='consumable-count'> {{item.system.quantity}}</div>
+  {{else}}
+    {{#if (eq item.system.uses.max '')}}{{else}}
+      <div class='consumable-count'>
+        {{item.system.uses.value}}
+        /
+        {{item.system.uses.max}}</div>
+    {{/if}}
+  {{/if}}
+</div>

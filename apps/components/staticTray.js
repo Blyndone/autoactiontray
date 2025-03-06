@@ -9,8 +9,8 @@ export class StaticTray extends AbilityTray {
     this.itemUsesUUID = options.itemUsesUUID || null;
     this.totalSlots = options.totalSlots;
     this.availableSlots = options.availableSlots;
+    this.type = 'static';
     this.generateTray();
-  
   }
 
   generateTray() {
@@ -19,19 +19,21 @@ export class StaticTray extends AbilityTray {
     let allItems = actor.items.filter((e) => e.system?.activities?.size);
     switch (this.category) {
       case 'action':
-        this.abilities = allItems.filter((e) =>
-          e.system?.activities?.some(
-            (activity) => activity?.activation?.type === 'action'
-          )
+        this.abilities = allItems.filter(
+          (e) =>
+            e.system?.activities?.some(
+              (activity) => activity?.activation?.type === 'action'
+            ) && e.type != 'spell'
         );
         this.id = 'action';
         break;
 
       case 'bonus':
-        this.abilities = allItems.filter((e) =>
-          e.system?.activities?.some(
-            (activity) => activity?.activation?.type === 'bonus'
-          )
+        this.abilities = allItems.filter(
+          (e) =>
+            e.system?.activities?.some(
+              (activity) => activity?.activation?.type === 'bonus'
+            ) && e.type != 'spell'
         );
         this.id = 'bonus';
         break;
@@ -52,10 +54,11 @@ export class StaticTray extends AbilityTray {
       case 'spell':
         this.abilities = allItems.filter(
           (e) =>
-            e.system.level === this.spellLevel &&
-            e.system.preparation?.prepared == true
-        );
-   
+            e.system.level <= this.spellLevel &&
+            e.system.preparation?.prepared == true &&
+            e.system.level != 0
+        ).sort((a, b) => b.system.level - a.system.level);
+
         this.id = 'spell-' + this.spellLevel;
         break;
 
@@ -66,5 +69,66 @@ export class StaticTray extends AbilityTray {
         this.id = 'ritual';
         break;
     }
+  }
+
+  static generateStaticTrays(actor) {
+    let actionTray = new StaticTray({
+      category: 'action',
+      actorUuid: actor.uuid,
+    });
+    let bonusTray = new StaticTray({
+      category: 'bonus',
+      actorUuid: actor.uuid,
+    });
+    let classTray = new StaticTray({
+      category: 'class',
+      actorUuid: actor.uuid,
+    });
+    let spellTray = [];
+
+    let slots = actor.system.spells;
+
+    let levels = Object.keys(slots)
+      .filter((key) => slots[key].value > 0)
+      .map((key) => slots[key].level);
+
+    let allItems = actor.items.filter((e) => e.system?.activities?.size);
+    let spells = allItems.filter(
+      (e) => e.type === 'spell' && e.system.preparation.prepared == true
+    );
+
+    if (spells.length > 0) {
+      levels = [
+        ...new Set([...levels, ...spells.map((x) => x.system.level)]),
+      ].sort((a, b) => a - b);
+    }
+
+    levels.forEach((level) => {
+      spellTray.push(
+        new StaticTray({
+          category: 'spell',
+          actorUuid: actor.uuid,
+          spellLevel: level,
+          totalSlots: actor.system?.spells['spell' + level]?.max,
+          availableSlots: actor.system?.spells['spell' + level]?.value,
+        })
+      );
+    });
+
+    let ritualTray = new StaticTray({
+      category: 'ritual',
+      actorUuid: actor.uuid,
+    });
+
+    this.staticTrays = [
+      actionTray,
+      bonusTray,
+      classTray,
+      ...spellTray,
+      ritualTray,
+    ];
+    return this.staticTrays.filter((e) => e.abilities?.length > 0);
+    this.render(true);
+    // console.log(this.staticTrays);
   }
 }

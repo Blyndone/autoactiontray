@@ -51,6 +51,31 @@ export class CustomTray extends AbilityTray {
     }
   }
 
+    static generateCustomTrays(actor) {
+      let commonTray = new CustomTray({
+        category: 'common',
+        id: 'common',
+        actorUuid: actor.uuid,
+      });
+      let classTray = new CustomTray({
+        category: 'class',
+        id: 'class',
+        actorUuid: actor.uuid,
+      });
+      let consumablesTray = new CustomTray({
+        category: 'items',
+        id: 'items',
+        actorUuid: actor.uuid,
+      });
+  
+      let customTray = new CustomTray({
+        category: 'custom',
+        id: 'custom',
+        actorUuid: actor.uuid,
+      });
+      return [commonTray, classTray, consumablesTray, customTray];
+    }
+
   checkSavedData() {
     let actor = fromUuidSync(this.actorUuid);
     if (actor != null) {
