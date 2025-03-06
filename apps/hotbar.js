@@ -386,6 +386,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   }
 
   static async useItem(event, target) {
+    game.tooltip.deactivate()
     let itemId = target.dataset.itemId;
     let item = this.actor.items.get(itemId);
     await item.use();
