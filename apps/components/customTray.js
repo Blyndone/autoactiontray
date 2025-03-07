@@ -92,81 +92,48 @@ export class CustomTray extends AbilityTray {
       let orMatches = desc.match(regex);
       if (orMatches) {
         split = desc.split(' or ');
-      } else { 
+      } else {
         split = [desc];
       }
-        split.forEach((e) => {
-          
-
-          regexPattern = `\\b(one|two|three|four|five|six|seven|eight|nine|ten)\\b (${itemNames.join(
-            '|'
-          )})`;
-          regex = new RegExp(regexPattern, 'g');
-          matches = e.match(regex);
-          if (matches) { 
-
-            matches.forEach((match) => {
-              match = match.split(' ');
-              for (let i = 0; i < num[match[0]]; i++) {
-                let attack = allItems.find(
-                  (e) => e.name.toLowerCase() === match.slice(1).join(' ')
-                );
-                this.abilities.push(attack);
-              }
-            });
-            this.abilities.push(null)
-          }
+      split.forEach((e) => {
+        regexPattern = `\\b(one|two|three|four|five|six|seven|eight|nine|ten)\\b (${itemNames.join(
+          '|'
+        )})`;
+        regex = new RegExp(regexPattern, 'g');
+        matches = e.match(regex);
+        if (matches) {
+          matches.forEach((match) => {
+            match = match.split(' ');
+            for (let i = 0; i < num[match[0]]; i++) {
+              let attack = allItems.find(
+                (e) => e.name.toLowerCase() === match.slice(1).join(' ')
+              );
+              this.abilities.push(attack);
+            }
           });
-      console.log(multiattack.system.description.value)
-      console.log(this.abilities.map(e => e ? e.name : 'null'));
-      this.abilities = AbilityTray.padArray(this.abilities, 20);
-      return;
-      // NUMBER ITEM ATTACKS
-      regexPattern = `\\b(one|two|three|four|five|six|seven|eight|nine|ten)\\b \\b(${itemNames.join(
-        '|'
-      )})\\b \\battacks\\b`;
-      regex = new RegExp(regexPattern, 'g');
-      matches = desc.match(regex);
-      split = matches[0].split(' ').slice(0, 2);
-      if (
-        split[1] === 'melee' ||
-        split[1] === 'ranged' ||
-        split[1] === 'spell'
-      ) {
-        console.log('MELEE RANGED SPELL GENERIC');
-      }
-      for (let i = 0; i < num[split[0]]; i++) {
-        let attack = allItems.find((e) => e.name.toLowerCase() === split[1]);
-        this.abilities.push(attack);
-      }
-
-      // NUMBER ATTACKS
-      regexPattern = `(one|two|three|four|five|six|seven|eight|nine|ten) attacks`;
-      regex = new RegExp(regexPattern, 'g');
-      matches = desc.match(regex);
-
-      //  NUMBER "with its" ITEM
-      regexPattern = `(one|two|three|four|five|six|seven|eight|nine|ten) with its (${itemNames.join(
-        '|'
-      )})`;
-      regex = new RegExp(regexPattern, 'g');
-      matches = desc.match(regex);
+          this.abilities.push(null);
+        }
+      });
+      // console.log(multiattack.system.description.value)
+      // console.log(this.abilities.map(e => e ? e.name : 'null'));
     }
-
-  
-    return;
 
     switch (this.category) {
       case 'common':
-        this.abilities = allItems.filter(
-          (e) =>
-            e.system?.activities?.some(
-              (activity) => activity?.activation?.type === 'action'
-            ) ||
-            e.system?.activities?.some(
-              (activity) => activity?.activation?.type === 'bonus'
-            )
-        );
+        this.abilities = [
+          ...this.abilities,
+          ...allItems.filter(
+            (e) =>
+              (!this.abilities.some((a) => a?.name === e.name) &&
+                e.system?.activities?.some(
+                  (activity) => activity?.activation?.type === 'action'
+                )) ||
+              e.system?.activities?.some(
+                (activity) => activity?.activation?.type === 'bonus'
+              )
+          ),
+        ];
+
         this.id = 'common';
         break;
       case 'classFeatures':
@@ -181,6 +148,9 @@ export class CustomTray extends AbilityTray {
         this.id = 'custom';
         break;
     }
+    this.abilities = AbilityTray.padArray(this.abilities, 20);
+   
+    return;
   }
 
   static generateCustomTrays(actor) {
@@ -205,8 +175,13 @@ export class CustomTray extends AbilityTray {
       id: 'custom',
       actorUuid: actor.uuid,
     });
+let trays = [commonTray, classTray, consumablesTray, customTray];
+      if (actor.type === 'npc') {
+      trays = trays.filter(e => (e.abilities.some(e => e!= null)))
+     
+    }
 
-    return [commonTray, classTray, consumablesTray, customTray];
+    return trays;
   }
 
   checkSavedData() {

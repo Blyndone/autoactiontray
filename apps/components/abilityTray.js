@@ -1,7 +1,7 @@
 export class AbilityTray {
   constructor(options = {}) {
     this.id = null;
-    this.abilities = null;
+    this.abilities = [];
     this.category = options.category || null;
     this.actorUuid = options.actorUuid || null;
     this.active = false;

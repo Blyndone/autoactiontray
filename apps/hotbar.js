@@ -59,6 +59,8 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.staticTrays = [];
     this.equipmentTray = null;
 
+    this.skills = ['ATH','INV', 'PRC', 'PER', 'STE', 'DEC', 'INS', 'ARC', 'HIS', 'MED']
+
     this.abilities = new Array(this.totalabilities).fill(null);
     this.init = false;
     Hooks.on('controlToken', this._onControlToken);
@@ -217,6 +219,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       staticTray: this.staticTray,
       customTrays: this.customTrays,
       equipmentTray: this.equipmentTray,
+      skills: this.skills,
     };
 
     return context;
