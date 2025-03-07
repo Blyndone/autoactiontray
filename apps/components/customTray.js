@@ -20,10 +20,13 @@ export class CustomTray extends AbilityTray {
 
   generateTray() {
     // Common, Class, Consumables
-    let tmpActor;
+
     let actor = fromUuidSync(this.actorUuid);
-    tmpActor = actor;
-    let allItems = tmpActor.items.filter((e) => e.system?.activities?.size);
+    if (actor.type === 'npc') {
+      this.generateNpcTray(actor);
+      return;
+    }
+    let allItems = actor.items.filter((e) => e.system?.activities?.size);
     switch (this.category) {
       case 'common':
         this.abilities = allItems.filter(
@@ -51,6 +54,133 @@ export class CustomTray extends AbilityTray {
     }
 
     this.abilities = AbilityTray.padArray(this.abilities, 20);
+  }
+
+  generateNpcTray(actor) {
+    this.abilities = [];
+    let allItems = actor.items.filter((e) => e.system?.activities?.size);
+    let multiattack = actor.items.find((e) => e.name === 'Multiattack');
+    if (multiattack && this.category === 'common') {
+      let desc = multiattack.system.description.value;
+      let itemNames = allItems.map((e) => e.name.toLowerCase());
+      itemNames.push('melee');
+      itemNames.push('ranged');
+      itemNames.push('spell');
+
+      let regex;
+      let regexPattern;
+      let matches;
+      let split;
+      let multi;
+
+      let num = {
+        one: 1,
+        two: 2,
+        three: 3,
+        four: 4,
+        five: 5,
+        six: 6,
+        seven: 7,
+        eight: 8,
+        nine: 9,
+        ten: 10,
+      };
+
+      desc = desc.replaceAll('with its ', '');
+      regexPattern = `\\b(or)\\b `;
+      regex = new RegExp(regexPattern, 'g');
+      let orMatches = desc.match(regex);
+      if (orMatches) {
+        split = desc.split(' or ');
+      } else { 
+        split = [desc];
+      }
+        split.forEach((e) => {
+          
+
+          regexPattern = `\\b(one|two|three|four|five|six|seven|eight|nine|ten)\\b (${itemNames.join(
+            '|'
+          )})`;
+          regex = new RegExp(regexPattern, 'g');
+          matches = e.match(regex);
+          if (matches) { 
+
+            matches.forEach((match) => {
+              match = match.split(' ');
+              for (let i = 0; i < num[match[0]]; i++) {
+                let attack = allItems.find(
+                  (e) => e.name.toLowerCase() === match.slice(1).join(' ')
+                );
+                this.abilities.push(attack);
+              }
+            });
+            this.abilities.push(null)
+          }
+          });
+      console.log(multiattack.system.description.value)
+      console.log(this.abilities.map(e => e ? e.name : 'null'));
+      this.abilities = AbilityTray.padArray(this.abilities, 20);
+      return;
+      // NUMBER ITEM ATTACKS
+      regexPattern = `\\b(one|two|three|four|five|six|seven|eight|nine|ten)\\b \\b(${itemNames.join(
+        '|'
+      )})\\b \\battacks\\b`;
+      regex = new RegExp(regexPattern, 'g');
+      matches = desc.match(regex);
+      split = matches[0].split(' ').slice(0, 2);
+      if (
+        split[1] === 'melee' ||
+        split[1] === 'ranged' ||
+        split[1] === 'spell'
+      ) {
+        console.log('MELEE RANGED SPELL GENERIC');
+      }
+      for (let i = 0; i < num[split[0]]; i++) {
+        let attack = allItems.find((e) => e.name.toLowerCase() === split[1]);
+        this.abilities.push(attack);
+      }
+
+      // NUMBER ATTACKS
+      regexPattern = `(one|two|three|four|five|six|seven|eight|nine|ten) attacks`;
+      regex = new RegExp(regexPattern, 'g');
+      matches = desc.match(regex);
+
+      //  NUMBER "with its" ITEM
+      regexPattern = `(one|two|three|four|five|six|seven|eight|nine|ten) with its (${itemNames.join(
+        '|'
+      )})`;
+      regex = new RegExp(regexPattern, 'g');
+      matches = desc.match(regex);
+    }
+
+  
+    return;
+
+    switch (this.category) {
+      case 'common':
+        this.abilities = allItems.filter(
+          (e) =>
+            e.system?.activities?.some(
+              (activity) => activity?.activation?.type === 'action'
+            ) ||
+            e.system?.activities?.some(
+              (activity) => activity?.activation?.type === 'bonus'
+            )
+        );
+        this.id = 'common';
+        break;
+      case 'classFeatures':
+        this.abilities = allItems.filter((e) => e.type === 'feat');
+        this.id = 'classFeatures';
+        break;
+      case 'items':
+        this.abilities = allItems.filter((e) => e.type === 'consumable');
+        this.id = 'items';
+        break;
+      case 'custom':
+        this.id = 'custom';
+        break;
+    }
   }
 
   static generateCustomTrays(actor) {
