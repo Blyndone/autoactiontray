@@ -1,0 +1,19 @@
+<div class='hp-container'>
+  <div class='hp-text'>
+    {{#if actor.system.attributes.hp}}
+
+      {{actor.system.attributes.hp.value}}
+      /
+      {{actor.system.attributes.hp.max}}
+    {{/if}}
+    {{#if actor.system.attributes.hp.tempmax includeZero=false}}
+      +
+      {{actor.system.attributes.hp.tempmax}}
+    {{/if}}
+
+  </div>
+
+  {{#if actor.system.attributes.hp.temp}}
+    <div class='temp-hp-text'>+{{actor.system.attributes.hp.temp}} </div>
+  {{/if}}
+</div>

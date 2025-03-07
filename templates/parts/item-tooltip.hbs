@@ -17,22 +17,23 @@
   <div class='tooltip-description'>
 
     {{system.description.value}}
-    {{!-- <p class='tooltip-effect'>{{effect}}</p> --}}
-  </div>
 
-  {{! <div class='tooltip-duration'>
-    <span class='duration-icon'>🛡️</span>
-    Until Long Rest
-  </div> }}
+  </div>
 
   <div class='tooltip-info'>
     {{#if system.range.reach}}
-      <span class='range-icon'>⚔️</span>
+      <span class='range-icon'><i class='fa-solid fa-swords'></i></span>
       {{system.range.reach}}
       ft. Melee
     {{/if}}
     {{#if system.range.value}}
-      <span class='range-icon'>🏹</span>
+      {{#if (eq system.type spell)}}
+        <span class='range-icon'><i
+            class='fa-solid fa-wand-sparkles'
+          ></i></span>
+      {{else}}
+        <span class='range-icon'><i class='fa-solid fa-bow-arrow'></i></span>
+      {{/if}}
       {{system.range.value}}
       {{#if system.range.long}}
         /
@@ -42,7 +43,7 @@
     {{/if}}
     <span>
       {{#if @root.saveType}}
-        🛡️{{@root.saveType}}
+        <i class='fa-solid fa-shield-halved'></i>{{@root.saveType}}
       {{/if}}
     </span>
 

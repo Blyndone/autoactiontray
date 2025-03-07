@@ -35,9 +35,15 @@
       />
     {{/if}}
   {{/if}}
-
-  <div class='spell-item-container-text'>{{getRomanNumeral
-      item.system.level
-    }}</div>
+  {{#if (eq item.system.uses.max '')}}
+    <div class='spell-item-container-text'>{{getRomanNumeral
+        item.system.level
+      }}</div>
+  {{else}}
+    <div class='consumable-count'>
+      {{item.system.uses.value}}
+      /
+      {{item.system.uses.max}}</div>
+  {{/if}}
 
 </div>

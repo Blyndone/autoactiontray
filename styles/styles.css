@@ -7,7 +7,7 @@
   padding: 10px;
   border-radius: 8px;
   position: absolute;
-  bottom: 15px;
+  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
@@ -21,11 +21,18 @@
   vertical-align: middle;
 }
 
-.type-bar,
-.weapon-section {
+.weapon-container {
   display: flex;
   flex-direction: row;
   gap: 1px;
+}
+
+.type-bar {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  position: absolute;
+  bottom: -15px;
 }
 
 .type-bar-active {
@@ -138,7 +145,7 @@
   align-items: center;
   background: rgba(117, 117, 117, 0.7);
   padding: 10px;
-  width: 1270px;
+  width: 1400px;
 }
 
 button {
@@ -155,7 +162,6 @@ button:hover {
 }
 
 .end-turn {
-  margin-left: auto;
 }
 
 .end-turn-btn {
@@ -469,4 +475,34 @@ button:hover {
 }
 .spell-item-container-img-upcast:hover {
   filter: grayscale(0%);
+}
+
+.hp-container {
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  bottom: 40px;
+  width: 150px;
+}
+
+.hp-text {
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+  text-shadow: rgb(0, 0, 0) 0px 0px 6px, rgb(0, 0, 0) 0px 0px 6px,
+    rgb(0, 0, 0) 0px 0px 6px;
+}
+
+.temp-hp-text {
+  color: #5bc0de; /* Light blue */
+  font-weight: bold;
+  font-size: 18px;
+
+  text-shadow: rgb(0, 0, 0) 0px 0px 6px, rgb(0, 0, 0) 0px 0px 6px,
+    rgb(0, 0, 0) 0px 0px 6px;
 }

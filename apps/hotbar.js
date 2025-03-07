@@ -64,7 +64,9 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     Hooks.on('controlToken', this._onControlToken);
     Hooks.on('updateActor', this._onUpdateActor.bind(this));
     Hooks.on('updateItem', this._onUpdateItem.bind(this));
+    Hooks.on("dropCanvasData", (canvas, data) => this._onDropCanvas(data));
 
+    ui.hotbar.collapse();
     registerHandlebarsHelpers();
   }
 
@@ -226,13 +228,6 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
 
   _attachFrameListeners() {
     super._attachFrameListeners();
-    // this.element.addEventListener("pointerdown", (event) => {
-    //   debugger
-    //   if (event.button !=2 || event.target.dataset.itemId == null ) return;
-    //      console.log(event)
-    //      console.log(event.target, event.button, event.buttons)
-
-    // })
 
     let itemContextMenu = [
       {
@@ -242,19 +237,36 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
           this._onAction(li[0], 'view');
         },
       },
-      //     {
-      //       name: "DND5E.ContextMenuActionEdit",
-      //       icon: "<i class='fas fa-edit fa-fw'></i>",
-      //       // condition: () => item.isOwner && !compendiumLocked,
-      //       callback: li => this._onAction(li[0], "edit")
-      // },
       {
         name: 'Remove',
         icon: "<i class='fas fa-trash fa-fw'></i>",
-        // condition: () => item.canDelete && item.isOwner && !compendiumLocked,
         callback: (li) => this._onAction(li[0], 'remove'),
       },
     ];
+
+    let characterContextMenu = [
+      {
+        name: 'View Sheet',
+        icon: '<i class="fas fa-eye"></i>',
+        callback: () => {
+          this.actor.sheet.render(true);
+        },
+      },
+
+      {
+        name: 'Reset Data',
+        icon: '<i class="fa-solid fa-delete-right"></i>',
+        callback: (li) => {
+          this.actor.unsetFlag('auto-action-tray', 'data');
+        this.refresh();
+        },
+      },
+    ];
+    new ContextMenu(this.element, '.character-image', characterContextMenu, {
+      onOpen: this._onOpenContextMenu(),
+      jQuery: true,
+      _expandUp: true,
+    });
 
     new ContextMenu(this.element, '.ability-button', itemContextMenu, {
       onOpen: this._onOpenContextMenu(),
@@ -278,6 +290,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       //   break;
       case 'remove':
         // //CHANGE THIS TO USE THE CURRENT TRAY
+        this.currentTray.abilities[li.dataset.index] = null;
         // this.abilities[li.dataset.index] = null;
         // this.setAbilities();
         this.render(true);
@@ -386,7 +399,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
   }
 
   static async useItem(event, target) {
-    game.tooltip.deactivate()
+    game.tooltip.deactivate();
     let itemId = target.dataset.itemId;
     let item = this.actor.items.get(itemId);
     await item.use();
@@ -481,6 +494,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     let data = effect.toDragData();
     data.section = li.dataset.section;
     data.index = li.dataset.index;
+    data.src = 'AAT'
     if (effect) event.dataTransfer.setData('text/plain', JSON.stringify(data));
 
     return;
@@ -500,6 +514,12 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
    * @param {DragEvent} event       The originating DragEvent
    * @protected
    */
+
+  async _onDropCanvas(event) {
+    debugger
+  }
+
+
 
   async _onDrop(event) {
     // Try to extract the data
@@ -562,5 +582,11 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       default:
         return;
     }
+  }
+  _onDropCanvas(data) {
+    if (data.src != 'AAT') return;
+    this.currentTray.setAbility(data.index, null);
+    this.render(true);
+    
   }
 }

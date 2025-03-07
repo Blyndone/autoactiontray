@@ -1,7 +1,10 @@
 <li>
   {{#if item}}
     <div
+    {{#if (eq tray.type 'static')}}
+      {{else}}
       data-drag='true'
+{{/if}}
       data-item-id='{{item._id}}'
       data-index='{{@index}}'
       data-tooltip= "{{> 'AAT.item-tooltip' }}"

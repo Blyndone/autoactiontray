@@ -1,6 +1,5 @@
 <div class="character-tray">
-  {{!-- {{> "AAT.header" }} --}}
-  <!-- Character Image -->
+
   <div class="resource-bar">
 {{> "AAT.resource-tray" }}
   </div>
@@ -11,15 +10,14 @@
       {{> "AAT.character-tray" }}
     </div>
 
-    <div class="divider"></div>
+ 
 
 
 
-    <div class="weapon-section">
+    <div class="weapon-container">
   {{> "AAT.equip-tray" }}
     </div>
 
-    <div class="divider"></div>
 
  <div class="current-tray">
 
@@ -46,8 +44,11 @@
 
 
 </div>  
-    <div class="divider"></div>
 
+
+    <div class="weapon-container">
+  {{> "AAT.equip-tray" }}
+    </div>
 
     <div class="end-turn">
        {{> "AAT.turn-tray" }}
