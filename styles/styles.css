@@ -508,11 +508,14 @@ button:hover {
 }
 
 .skill-container {
-  display: grid;
-  grid-template-columns: repeat(2, auto); /* Two columns */
+  display: flex;
+  grid-template-columns: repeat(2, auto);
   gap: 2px;
   justify-content: center;
   padding: 0px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 170px;
 }
 
 .skill-button {
