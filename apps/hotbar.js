@@ -4,6 +4,7 @@ import { AbilityTray } from './components/abilityTray.js';
 import { CustomTray } from './components/customTray.js';
 import { StaticTray } from './components/staticTray.js';
 import { EquipmentTray } from './components/equipmentTray.js';
+import { SkillTray } from './components/skillTray.js';
 import { registerHandlebarsHelpers } from './helpers/handlebars.js';
 
 export class AutoActionTray extends api.HandlebarsApplicationMixin(
@@ -58,8 +59,8 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
     this.customTrays = [];
     this.staticTrays = [];
     this.equipmentTray = null;
+    this.skillTray = null;
 
-    this.skills = ['ATH','INV', 'PRC', 'PER', 'STE', 'DEC', 'INS', 'ARC', 'HIS', 'MED']
 
     this.abilities = new Array(this.totalabilities).fill(null);
     this.init = false;
@@ -103,6 +104,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       this.setDefaultTray();
       this.meleeWeapon = this.equipmentTray.getMeleeWeapon();
       this.rangedWeapon = this.equipmentTray.getRangedWeapon();
+      this.skillTray = SkillTray.generateCustomTrays(this.actor);
     }
     this.refresh();
   };
