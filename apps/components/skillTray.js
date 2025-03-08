@@ -169,9 +169,4 @@ export class SkillTray {
     }
     return skills;
   }
-
-  static padArray(arr, length = 20, filler = null) {
-    if (arr == null) return new Array(length).fill(filler);
-    return [...arr, ...Array(Math.max(0, length - arr.length)).fill(filler)];
-  }
 }

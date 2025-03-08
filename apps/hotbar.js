@@ -221,7 +221,7 @@ export class AutoActionTray extends api.HandlebarsApplicationMixin(
       staticTray: this.staticTray,
       customTrays: this.customTrays,
       equipmentTray: this.equipmentTray,
-      skills: this.skills,
+      skillTray: this.skillTray,
     };
 
     return context;

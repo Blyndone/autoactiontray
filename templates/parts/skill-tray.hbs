@@ -1,5 +1,8 @@
-<div>
-  {{#each skills as |skill|}}
-    <button class='skill-button'>{{this}}</button>
+<div class='skill-container'>
+
+  {{#each skillTray.currentSkills as |skill|}}
+    <div class='skill-button'>
+      {{skill.abbreviation}}
+    </div>
   {{/each}}
 </div>
